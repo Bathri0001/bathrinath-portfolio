@@ -12,13 +12,23 @@ import BackToTop from "@/components/BackToTop";
 import EasterEgg from "@/components/EasterEgg";
 
 const title = `${profile.displayName} — ${profile.title}`;
-const description = "GenAI-focused Full-Stack Developer building AI-powered applications, RAG pipelines and full-stack products. Portfolio of Bathrinath Murugan.";
-
+const description ="Bathrinath Murugan is a GenAI-focused Full-Stack Developer specializing in Generative AI, RAG applications, Python, React, Next.js and intelligent software solutions. Explore projects, technical skills and professional experience.";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: title, template: `%s | ${profile.displayName}` },
   description,
   alternates: { canonical: "/" },
+  robots: {
+  index: true,
+  follow: true,
+  googleBot: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+  },
+},
   icons: { icon: "/favicon.ico", apple: "/icons/apple-touch-icon.png" },
   appleWebApp: { capable: true, title: "Portfolio", statusBarStyle: "black-translucent" },
   applicationName: "Portfolio",

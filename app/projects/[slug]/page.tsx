@@ -14,11 +14,46 @@ export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
 
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const p = projects.find((x) => x.slug === slug);
+
   if (!p) return {};
-  return { title: p.title, description: p.summary, alternates: { canonical: `/projects/${p.slug}` }, openGraph: { title: p.title, description: p.summary } };
+
+  const projectUrl = `/projects/${p.slug}`;
+
+  return {
+    title: p.title,
+    description: p.summary,
+
+    alternates: {
+      canonical: projectUrl,
+    },
+
+    openGraph: {
+      type: "website",
+      title: p.title,
+      description: p.summary,
+      url: projectUrl,
+      siteName: "Bathrinath Murugan Portfolio",
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: `${p.title} - Project by Bathrinath Murugan`,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: p.title,
+      description: p.summary,
+      images: ["/og-image.png"],
+    },
+  };
 }
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
