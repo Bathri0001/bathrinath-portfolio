@@ -14,9 +14,9 @@ const item: Variants = { hidden: { opacity: 0, y: 22 }, show: { opacity: 1, y: 0
 export default function Hero() {
   return (
     <section id="home" className="relative flex min-h-screen items-center px-5 pb-16 pt-28">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-[1] h-[110%] overflow-hidden [mask-image:linear-gradient(to_bottom,black_55%,transparent)]">
-        <Image src="/images/hero-bg.png" alt="" fill priority sizes="100vw" className="object-cover object-center opacity-25 dark:opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-r from-bg via-bg/75 to-bg/20" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-[1] h-[72vh] overflow-hidden md:h-[110%] [mask-image:linear-gradient(to_bottom,black_55%,transparent)]">
+        <Image src="/images/hero-bg.png" alt="" fill priority sizes="100vw" className="object-cover object-[62%_center] opacity-25 md:object-center dark:opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-bg/30 via-bg/70 to-bg md:bg-gradient-to-r md:from-bg md:via-bg/75 md:to-bg/20" />
         <div className="absolute inset-0 bg-accent/15 mix-blend-color" />
       </div>
       <div className="mx-auto grid w-full max-w-6xl items-center gap-14 lg:grid-cols-[1.1fr_0.9fr]">

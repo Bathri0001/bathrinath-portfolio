@@ -28,14 +28,22 @@ export default function ProjectFlow3D({ p, size = "card", labels = true }: { p: 
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-
+  const [scale, setScale] = useState(1);
   useEffect(() => {
     if (paused || n === 0) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setActive(n - 1); return; }
     const t = setInterval(() => setActive((a) => (a + 1) % n), 1300);
     return () => clearInterval(t);
   }, [paused, n]);
-
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => setScale(Math.min(1, (el.clientWidth - 28) / (W + 40)));
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [W]);
   const move = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType !== "mouse" || !ref.current) return;
     const r = ref.current.getBoundingClientRect();
@@ -46,9 +54,9 @@ export default function ProjectFlow3D({ p, size = "card", labels = true }: { p: 
 
   return (
     <div ref={ref} onPointerMove={move} onPointerLeave={leave} role="group" aria-label={`3D flow of ${p.title}`}
-      className={`relative overflow-hidden border-line ${big ? "h-[38rem] rounded-3xl border" : "h-[23rem] border-y"}`} style={{ perspective: "1100px" }}>
+      className={`relative overflow-hidden border-line ${big ? "h-[30rem] rounded-3xl border sm:h-[38rem]" : "h-[23rem] border-y"}`}>
       <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(70% 80% at 50% 45%, color-mix(in oklab, var(--accent) 24%, transparent), transparent 70%)" }} />
-      <div className="absolute left-1/2" style={{ top: "50%", marginTop: -H / 2 + 14, width: W, height: H, marginLeft: -W / 2, transformStyle: "preserve-3d", transform: "rotateX(calc(var(--rx, 0deg) + 30deg)) rotateY(var(--ry, 0deg))", transition: "transform .25s ease-out" }}>
+      <div className="absolute left-1/2" style={{ top: "50%", marginTop: -H / 2 + 14, width: W, height: H, marginLeft: -W / 2, transformStyle: "preserve-3d", transform: `scale(${scale}) rotateX(calc(var(--rx, 0deg) + 30deg)) rotateY(var(--ry, 0deg))`, transition: "transform .25s ease-out" }}>
         <div className="flow-sway absolute inset-0">
           <div aria-hidden="true" className="absolute -inset-5 rounded-3xl border border-line bg-fg/[0.03]" style={{ transform: "translateZ(-26px)" }} />
           <svg width={W} height={H} className="absolute inset-0 overflow-visible" aria-hidden="true">

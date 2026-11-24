@@ -83,8 +83,8 @@ export default function Services() {
           {CARDS.map((c, i) => (
             <Reveal key={c.n} delay={i * 0.07}>
               <article className="card card-hover flex h-full flex-col p-6 !rounded-3xl">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+  <div className="flex flex-wrap items-center gap-3">
                     <span className="font-mono text-sm text-accent-ink">{c.n}</span>
                     <span className="rounded-full border border-line px-3 py-1 font-mono text-[11px] tracking-widest text-muted">{c.tag}</span>
                   </div>
