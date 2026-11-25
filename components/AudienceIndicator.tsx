@@ -2,22 +2,19 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { profile } from "@/data/profile";
-import { readStorage, writeStorage } from "@/lib/utils";
+
 import { fetchStats, postStat } from "@/lib/stats";
 
-const LAST_KEY = "bathri_portfolio_last_visit_v3";
-const THROTTLE_MS = 20_000; // returning visitors always count; rapid refreshes within 20s do not
+ // returning visitors always count; rapid refreshes within 20s do not
 const BASE = profile.baseAudience; // 400
-
+let countedThisLoad = false; // resets on every full page open / reload
 /** Shared visit counter stored server-side. Each visit counts, including repeat visitors. */
 export default function AudienceIndicator() {
   const [value, setValue] = useState(BASE);
 
-  useEffect(() => {
-    const last = Number(readStorage("local", LAST_KEY) ?? 0);
-    const now = Date.now();
-    if (now - last < THROTTLE_MS) { fetchStats().then((s) => s && setValue(s.views)); return; }
-    writeStorage("local", LAST_KEY, String(now)); // set first so StrictMode / re-renders never double count
+   useEffect(() => {
+    if (countedThisLoad) { fetchStats().then((s) => s && setValue(s.views)); return; }
+    countedThisLoad = true; // one count per page open
     postStat("view").then((s) => (s ? setValue(s.views) : fetchStats().then((x) => x && setValue(x.views))));
   }, []);
 
